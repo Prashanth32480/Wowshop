@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  push:
+    branches: wowshop-testing
+
 env:
   wowshop_image: '${{ secrets.DOCKER_HUB_USERNAME }}/wowshop'
 
