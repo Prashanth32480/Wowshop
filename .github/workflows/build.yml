@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
   push:
-    workflow_dispatch:
+    
     branches: wowshop-testing
 
 
@@ -30,3 +30,8 @@ jobs:
       run: dotnet test --no-build --verbosity normal -c Release
     - name: Create Docker Image
       run: dotnet publish ./Wowshop.API/Wowshop.API.csproj /t:PublishContainer -r linux-x64
+    - name: Invoke workflow with inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+              workflow: Another Workflow
+              inputs: '{ "message": "blah blah", "something": true }'
