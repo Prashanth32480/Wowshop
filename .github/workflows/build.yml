@@ -1,1 +1,31 @@
 
+name: Build
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  push:
+    branches: wowshop-testing
+
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore -c Release
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -c Release
+    - name: Create Docker Image
+      run: dotnet publish ./Wowshop.API/Wowshop.API.csproj /t:PublishContainer -r linux-x64
